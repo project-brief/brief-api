@@ -1,0 +1,81 @@
+
+plugins {
+    id 'java'
+    id 'eclipse-wtp'
+    id 'war'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+group = 'project-brief'
+version = '0.0.1.SNAPSHOT'
+
+repositories {
+    jcenter()
+}
+
+def libVer = [
+    servletApi: '3.1.0',
+    jackson: '2.10.1',
+    aspectj: '1.9.5',
+    mybatis:'3.5.3',
+    mybatisSpring: '2.0.3',
+    spring: '4.3.25.RELEASE',
+    logback: '1.2.3',
+    commonsLang: '3.9',
+    slf4j: '1.7.29',
+    junit: '5.5.2'
+]
+
+dependencies {
+    providedCompile group: "javax.servlet", name: "javax.servlet-api", version: "${libVer.servletApi}"
+
+    implementation group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "${libVer.jackson}"
+    implementation group: "com.fasterxml.jackson.core", name: "jackson-core", version: "${libVer.jackson}"
+    implementation group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "${libVer.jackson}"
+    implementation group: "org.aspectj", name: "aspectjweaver", version: "${libVer.aspectj}"
+    implementation group: "org.mybatis", name: "mybatis", version: "${libVer.mybatis}"
+    implementation group: "org.mybatis", name: "mybatis-spring", version: "${libVer.mybatisSpring}"
+    implementation group: "org.springframework", name: "spring-aop", version: "${libVer.spring}"
+    implementation group: "org.springframework", name: "spring-beans", version: "${libVer.spring}"
+    implementation group: "org.springframework", name: "spring-context", version: "${libVer.spring}"
+    implementation group: "org.springframework", name: "spring-core", version: "${libVer.spring}"
+    implementation group: "org.springframework", name: "spring-expression", version: "${libVer.spring}"
+    implementation group: "org.springframework", name: "spring-jdbc", version: "${libVer.spring}"
+    implementation group: "org.springframework", name: "spring-tx", version: "${libVer.spring}"
+    implementation group: "org.springframework", name: "spring-web", version: "${libVer.spring}"
+    implementation group: "org.springframework", name: "spring-webmvc", version: "${libVer.spring}"
+
+    implementation group: "ch.qos.logback", name: "logback-core", version: "${libVer.logback}"
+    implementation group: "ch.qos.logback", name: "logback-classic", version: "${libVer.logback}"
+    implementation group: "org.apache.commons", name: "commons-lang3", version: "${libVer.commonsLang}"
+    implementation group: "org.slf4j", name: "jcl-over-slf4j", version: "${libVer.slf4j}"
+    implementation group: "org.slf4j", name: "jul-to-slf4j", version: "${libVer.slf4j}"
+    implementation group: "org.slf4j", name: "log4j-over-slf4j", version: "${libVer.slf4j}"
+    implementation group: "org.slf4j", name: "slf4j-api", version: "${libVer.slf4j}"
+
+    implementation files('lib/wcyoung-encrypt-dbcp-0.9.0.SNAPSHOT.jar')
+    implementation files('lib/spring-mvc-common-0.0.1.SNAPSHOT.jar')
+
+    testImplementation group: "org.junit.jupiter", name: "junit-jupiter-api", version: "${libVer.junit}"
+}
+
+war {
+    manifest {
+        attributes "Implementation-Title": "${rootProject.name}",
+                "Implementation-Version": "${rootProject.version}",
+                "Implementation-Vendor": "${rootProject.group}"
+    }
+
+    doFirst {
+        def manifestFile = new File(projectDir, 'src/main/webapp/META-INF/MANIFEST.MF')
+        manifestFile.text = "Manifest-Version: 1.0\n"
+        manifestFile.text += "Implementation-Title: ${war.manifest.attributes['Implementation-Title']}\n"
+        manifestFile.text += "Implementation-Version: ${war.manifest.attributes['Implementation-Version']}\n"
+        manifestFile.text += "Implementation-Vendor: ${war.manifest.attributes['Implementation-Vendor']}\n"
+    }
+}
