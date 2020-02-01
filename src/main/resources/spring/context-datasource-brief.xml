@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/jee
+      http://www.springframework.org/schema/jee/spring-jee.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/aop
+      http://www.springframework.org/schema/aop/spring-aop.xsd"
+      default-autowire="byName">
+
+  <jee:jndi-lookup id="briefDataSource" jndi-name="jdbc/Brief" expected-type="javax.sql.DataSource"/>
+
+  <bean id="briefSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="briefDataSource"/>
+    <property name="configLocation" value="classpath:/config/mybatis-config.xml"/>
+    <property name="mapperLocations" value="classpath:/mapper/brief/*.xml"/>
+  </bean>
+
+  <bean id="briefSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+    <constructor-arg index="0" ref="briefSqlSessionFactory"/>
+  </bean>
+
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="brief.mapper.brief"/>
+    <property name="sqlSessionFactoryBeanName" value="briefSqlSessionFactory"/>
+  </bean>
+
+  <bean id="briefTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <constructor-arg ref="briefDataSource"/>
+  </bean>
+
+  <tx:annotation-driven transaction-manager="briefTransactionManager"/>
+
+  <tx:advice id="briefTxAdvice" transaction-manager="briefTransactionManager">
+    <tx:attributes>
+      <tx:method name="get*" read-only="true" propagation="NOT_SUPPORTED"/>
+      <tx:method name="select*" read-only="true" propagation="NOT_SUPPORTED"/>
+      <tx:method name="tx*" propagation="REQUIRES_NEW" rollback-for="Exception"/>
+      <tx:method name="*" propagation="REQUIRED" rollback-for="Exception"/>
+    </tx:attributes>
+  </tx:advice>
+
+  <aop:config>
+    <aop:pointcut id="briefTxPointcut" expression="execution(public * brief.api..*Service.*(..))"/>
+    <aop:advisor advice-ref="briefTxAdvice" pointcut-ref="briefTxPointcut"/>
+  </aop:config>
+
+</beans>
