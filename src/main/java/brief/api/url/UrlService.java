@@ -21,12 +21,12 @@ public class UrlService extends BaseService {
         return urlMapper.selectOriginalUrl(param);
     }
 
-    public Map<String, Object> insertUrl(Map<String, Object> param) {
+    public Map<String, Object> insertUrl(Map<String, Object> param) throws Exception {
         if (urlMapper.insertUrl(param) < 1) {
             return null;
         }
 
-        String shortUrl = Base64.encodeBase64URLSafeString(MapUtils.getString(param, "sq").getBytes());
+        String shortUrl = Base64.encodeBase64URLSafeString(MapUtils.getString(param, "sq").getBytes("UTF-8"));
         param.put("short_url", shortUrl);
 
         if (urlMapper.updateShortUrl(param) < 1) {
