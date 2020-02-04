@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="brief.mapper.brief.UrlMapper">
+
+  <select id="selectOriginalUrl" parameterType="HashMap" resultType="HashMap">
+    SELECT original_url
+          ,short_url
+    FROM t_url
+    WHERE short_url = #{short_url}
+  </select>
+
+  <insert id="insertUrl" parameterType="HashMap" keyProperty="sq" useGeneratedKeys="true">
+    INSERT INTO t_url (original_url)
+    VALUES (#{original_url})
+  </insert>
+
+  <update id="updateShortUrl" parameterType="HashMap">
+    UPDATE t_url
+       SET short_url = #{short_url}
+    WHERE sq = #{sq}
+  </update>
+
+</mapper>
