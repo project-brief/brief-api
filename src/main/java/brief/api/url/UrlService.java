@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import brief.mapper.brief.UrlMapper;
 import wcyoung.spring.mvc.common.base.BaseService;
@@ -23,6 +24,7 @@ public class UrlService extends BaseService {
 
     public Map<String, Object> insertUrl(Map<String, Object> param) throws Exception {
         if (urlMapper.insertUrl(param) < 1) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return null;
         }
 
@@ -30,6 +32,7 @@ public class UrlService extends BaseService {
         param.put("short_url", shortUrl);
 
         if (urlMapper.updateShortUrl(param) < 1) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return null;
         }
 
