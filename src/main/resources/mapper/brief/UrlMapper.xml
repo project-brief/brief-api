@@ -3,7 +3,7 @@
 
 <mapper namespace="brief.mapper.brief.UrlMapper">
 
-  <select id="selectOriginalUrl" parameterType="HashMap" resultType="HashMap">
+  <select id="selectUrlInfo" parameterType="HashMap" resultType="HashMap">
     SELECT original_url
           ,short_url
     FROM t_url

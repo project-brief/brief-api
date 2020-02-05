@@ -18,8 +18,8 @@ public class UrlService extends BaseService {
     @Resource
     private UrlMapper urlMapper;
 
-    public Map<String, Object> selectOriginalUrl(Map<String, Object> param) {
-        return urlMapper.selectOriginalUrl(param);
+    public Map<String, Object> selectUrlInfo(Map<String, Object> param) {
+        return urlMapper.selectUrlInfo(param);
     }
 
     public Map<String, Object> insertUrl(Map<String, Object> param) throws Exception {
@@ -36,7 +36,7 @@ public class UrlService extends BaseService {
             return null;
         }
 
-        return selectOriginalUrl(param);
+        return selectUrlInfo(param);
     }
 
 }

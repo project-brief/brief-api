@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface UrlMapper {
 
-    Map<String, Object> selectOriginalUrl(Map<String, Object> param);
+    Map<String, Object> selectUrlInfo(Map<String, Object> param);
 
     int insertUrl(Map<String, Object> param);
 

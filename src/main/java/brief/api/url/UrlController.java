@@ -25,13 +25,13 @@ public class UrlController extends BaseController {
     private UrlService urlService;
 
     @GetMapping(value = "/{short_url}")
-    public ResponseEntity<Map<String, Object>> selectOriginalUrl(@PathVariable String short_url) {
+    public ResponseEntity<Map<String, Object>> selectUrlInfo(@PathVariable String short_url) {
         Map<String, Object> body = null;
 
         try {
             Map<String, Object> param = new HashMap<>();
             param.put("short_url", short_url);
-            body = urlService.selectOriginalUrl(param);
+            body = urlService.selectUrlInfo(param);
         } catch (Exception e) {
             log.error("Exception: {}", ExceptionUtils.getStackTrace(e));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -41,7 +41,7 @@ public class UrlController extends BaseController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> addUrl(@RequestBody Map<String, Object> param) {
+    public ResponseEntity<Map<String, Object>> insertUrl(@RequestBody Map<String, Object> param) {
         Map<String, Object> body = null;
 
         try {
