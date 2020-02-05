@@ -1,5 +1,6 @@
 package brief.api.url;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -22,7 +23,7 @@ public class UrlService extends BaseService {
         return urlMapper.selectUrlInfo(param);
     }
 
-    public Map<String, Object> insertUrl(Map<String, Object> param) throws Exception {
+    public Map<String, Object> insertUrl(Map<String, Object> param) throws UnsupportedEncodingException {
         if (urlMapper.insertUrl(param) < 1) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return null;
