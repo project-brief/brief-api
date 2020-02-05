@@ -12,7 +12,8 @@ public class LoggingAspect {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Around(value = "execution(* brief.api..*Service.*(..))")
+    @Around(value = "execution(* brief.api..*Service.*(..))"
+            + " or execution(* brief.mapper.brief..*Mapper.*(..))")
     public Object logMethodRunningTime(ProceedingJoinPoint pjp) throws Throwable {
         String className = pjp.getSignature().getDeclaringTypeName();
         String methodName = pjp.getSignature().getName();
