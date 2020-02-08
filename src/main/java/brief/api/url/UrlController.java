@@ -9,6 +9,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +57,22 @@ public class UrlController extends BaseController {
         }
 
         return new ResponseEntity<>(body, HttpStatus.CREATED);
+    }
+
+    @PatchMapping(value = "/{short_url}")
+    public ResponseEntity<Map<String, Object>> updateRedirectCount(@PathVariable String short_url) {
+        try {
+            Map<String, Object> param = new HashMap<>();
+            param.put("short_url", short_url);
+            if (!urlService.updateRedirectCount(param)) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            log.error("Exception: {}", ExceptionUtils.getStackTrace(e));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

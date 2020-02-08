@@ -10,4 +10,6 @@ public interface UrlMapper {
 
     int updateShortUrl(Map<String, Object> param);
 
+    int updateRedirectCount(Map<String, Object> param);
+
 }

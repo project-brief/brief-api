@@ -11,14 +11,20 @@
   </select>
 
   <insert id="insertUrl" parameterType="HashMap" keyProperty="sq" useGeneratedKeys="true">
-    INSERT INTO t_url (original_url)
-    VALUES (#{original_url})
+    INSERT INTO t_url (original_url, short_url, redirect_cnt)
+    VALUES (#{original_url}, NULL, 0)
   </insert>
 
   <update id="updateShortUrl" parameterType="HashMap">
     UPDATE t_url
        SET short_url = #{short_url}
     WHERE sq = #{sq}
+  </update>
+
+  <update id="updateRedirectCount" parameterType="HashMap">
+    UPDATE t_url
+       SET redirect_cnt = redirect_cnt + 1
+    WHERE short_url = #{short_url}
   </update>
 
 </mapper>

@@ -40,4 +40,13 @@ public class UrlService extends BaseService {
         return selectUrlInfo(param);
     }
 
+    public boolean updateRedirectCount(Map<String, Object> param) {
+        if (urlMapper.updateRedirectCount(param) < 1) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return false;
+        }
+
+        return true;
+    }
+
 }
